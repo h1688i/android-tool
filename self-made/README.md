@@ -6,8 +6,8 @@
   要呼叫getData(String key),這個版本還可以更優化,目前他已經很好用了。  
 
 >  只需編輯 .txt 檔就可以使用他:example如下  
-  #運行系統環境  
-  system=windows  
+  #運行系統環境  
+  system=windows  
   #程序終止命令  
   stop=true  
   #資料庫位址  
