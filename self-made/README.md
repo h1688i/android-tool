@@ -7,12 +7,12 @@
 >
 > 只需編輯 .txt 檔就可以使用他:example如下  
 >
-> #運行系統環境 
- system=windows  
- #程序終止命令  
- stop=true  
- #資料庫位址  
- db_ip=0.0.0.0  
- #資料庫名稱  
- db_name=your name  
+> #運行系統環境
+  system=windows  
+  #程序終止命令  
+  stop=true  
+  #資料庫位址  
+  db_ip=0.0.0.0  
+  #資料庫名稱  
+  db_name=your name  
 
