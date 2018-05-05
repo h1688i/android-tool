@@ -27,14 +27,14 @@ public class Note {
 		init(filePath);
 	}
 	
-	public String getData(String title)
+	public String getData(String key)
 	{
-		return get(title);
+		return get(key);
 	}
 	
-	public void setData(String title,String value)
+	public void setData(String key,String value)
 	{
-		set(title,value);
+		set(key,value);
 	}
 	
 	private void init(String filePath)
@@ -45,24 +45,24 @@ public class Note {
 			File file = new File(filePath);
 			BufferedReader read = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "utf8"));
 			
-			String str;
-			int i = 0;
-			while ( (str=read.readLine())!=null)
+			String text;
+			int index = 0;
+			while ( (text=read.readLine())!=null)
 			{
-				if(!str.contains("#"))
+				if(!text.contains("#"))
 				{
-					String s[] = str.split("=");
-					String title = s[0];
-					String value = s[1];
-					map.put(title,value);
-					keys.add(title);
-					//System.out.println("read > "+title+"="+value);
+					String data[] = text.split("=");
+					String key = data[0];
+					String value = data[1];
+					map.put(key,value);
+					keys.add(key);
+					//System.out.println("read > "+key+"="+value);
 				}
 				else
 				{
-					map.put(i+"#",str);
-					keys.add(i+"#");
-					i++;
+					map.put(index+"#",text);
+					keys.add(index+"#");
+					index++;
 				}
 			}
 			read.close();
@@ -75,22 +75,22 @@ public class Note {
 		}
 	}
 	
-	private void set(String title,String value)
+	private void set(String oldKey,String value)
 	{
-		if(map.containsKey(title))
+		if(map.containsKey(oldKey))
 		{
-			map.put(title, value);
+			map.put(oldKey, value);
 			String data = "";
 			for(int i = 0 ; i < keys.size() ; i++)
 			{
-				String key = keys.get(i);
-				if(!key.contains("#"))
+				String newKey = keys.get(i);
+				if(!newKey.contains("#"))
 				{
-					data += key + "=" +map.get(key) + "\n";	
+					data += newKey + "=" +map.get(newKey) + "\n";	
 				}
 				else
 				{
-					data += map.get(key) + "\n";	
+					data += map.get(newKey) + "\n";	
 				}
 			}
 			//System.out.println("write < "+data);
@@ -98,15 +98,15 @@ public class Note {
 		}
 	}
 	
-	private String get(String title)
+	private String get(String key)
 	{
 		writeTxtFile();
-		String s = map.get(title);
-		if(s==null)
+		String str = map.get(key);
+		if(str==null)
 		{
-			System.out.println(title+" = null");
+			System.out.println(key+" = null");
 		}
-		return s;
+		return str;
 	}
 	
 	private void writeFile(String data)
@@ -136,24 +136,24 @@ public class Note {
 			File file = new File(filePath);
 			BufferedReader read = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "utf8"));
 			
-			String str;
-			int i = 0;
-			while ( (str=read.readLine())!=null)
+			String text;
+			int index = 0;
+			while ( (text=read.readLine())!=null)
 			{
-				if(!str.contains("#"))
+				if(!text.contains("#"))
 				{
-					String s[] = str.split("=");
-					String title = s[0];
-					String value = s[1];
-					map.put(title,value);
-					keys.add(title);
-					//System.out.println("write > "+title+"="+value);
+					String data[] = text.split("=");
+					String key = data[0];
+					String value = data[1];
+					map.put(key,value);
+					keys.add(key);
+					//System.out.println("write > "+key+"="+value);
 				}
 				else
 				{
-					map.put(i+"#",str);
-					keys.add(i+"#");
-					i++;
+					map.put(index+"#",text);
+					keys.add(index+"#");
+					index++;
 				}
 			}
 			read.close();
