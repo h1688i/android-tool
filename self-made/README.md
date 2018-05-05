@@ -5,7 +5,7 @@
   只要呼叫setData(String key,String value),如果你想要拿到某個資料,只
   要呼叫getData(String key),這個版本還可以更優化,目前他已經很好用了。  
 
-  只需編輯 .txt 檔就可以使用他:example如下 
+>  只需編輯 .txt 檔就可以使用他:example如下 
    
   #運行系統環境  
   system=windows  
