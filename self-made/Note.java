@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /*
+ * v1.0
  * 這是一個tiny script,適用於小單位的場景描述,簡單易讀易用是他的特性
  * 使用 key=value 方式定義所需存取資料
  * 使用 # 來當註釋
@@ -94,13 +95,13 @@ public class Note {
 				}
 			}
 			//System.out.println("write < "+data);
-			writeFile(data);
+			save(data);
 		}
 	}
 	
 	private String get(String key)
 	{
-		writeTxtFile();
+		update();
 		String str = map.get(key);
 		if(str==null)
 		{
@@ -109,7 +110,7 @@ public class Note {
 		return str;
 	}
 	
-	private void writeFile(String data)
+	private void save(String data)
 	{
 		try
 		{
@@ -127,7 +128,7 @@ public class Note {
 		}
 	}
 	
-	private void writeTxtFile()
+	private void update()
 	{
 		map.clear();
 		keys.clear();
