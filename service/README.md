@@ -5,7 +5,7 @@
 ![](BackendServiceClassDiagram.png)
 * ##### **圖 1.** 說明Strategy後臺服務基於Daemon類別為基礎,由CoreService,PushService繼承Daemon服務,並從PushServic延伸Client遠端服務通訊與Polling系統輪詢功能。
 
-##### **圖 2.** 後臺常駐服務主流程圖: Daemon以虛線表示代表被繼承類,和方法
+##### **圖 2.** 後臺常駐服務主流程圖:
 ![](Strategy後台服務主流程圖.png)
 
 * ##### **圖 2.** 說明後台啟動後主要流程,當CoreService與PushService第一次被啟動後先設定綁定對象,之後執行onCreate與父類onCreate,在父類initialize裡執行服務綁定動作。
