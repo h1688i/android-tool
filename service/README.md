@@ -54,7 +54,7 @@
   * ##### SystemBroadcastReceiver.java 系統廣播接收
   * ##### NotificationUI.java 訊息通知 X
   * ##### User.java 使用者訊息加解密存取 X
-  * ##### AESr.java 訊息加密 X
+  * ##### AES.java 訊息加密 X
   * ##### ServiceManager.java 服務啟動相關功能 X
  
 #### 後面打 X 表示你可能不會需要的部分,剩下部分足以實現後台長駐服務,遠端通訊,與系統輪詢功能
