@@ -13,6 +13,10 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 
+/*
+ * 裝置相關操作
+ */
+
 public class Device {
 	private static String TAG = Device.class.getSimpleName();
 	
@@ -63,6 +67,8 @@ public class Device {
 	
 	/*
 	 * NetworkInfo 狀態細節解析
+	 * 
+	 * @param info 網路狀態相關細節訊息
 	 */
 	public static void networkInfoPaser(NetworkInfo info)
 	{
@@ -114,6 +120,9 @@ public class Device {
 	    IO.LOG(TAG,status,"");
 	}
 	
+	/*
+	 * 使用者自啟動管理設定引導
+	 */
 	@SuppressLint("DefaultLocale")
 	public static void selfStartManagerSettingIntent(Context context){
 
