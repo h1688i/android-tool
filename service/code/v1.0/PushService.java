@@ -37,7 +37,7 @@ public class PushService extends Daemon {
 		init();
 	}
 	
-	/*
+	/**
 	 * 檢查網路連接是否正常,如果正常則繼續執行保持遠端連線動作,
 	 * 如果網路連接異常,則待機等待下一次輪巡
 	 * 
@@ -60,7 +60,7 @@ public class PushService extends Daemon {
 		return START_STICKY;
 	}
 
-	/*
+	/**
 	 * 檢查client連線狀態
 	 * 
 	 * @param action 要做動作
@@ -73,7 +73,7 @@ public class PushService extends Daemon {
 		} 
 	}
 	
-	/*
+	/**
 	 * client目前連線狀態,如果cycleCount大於cycle則重新設定Polling,Client
 	 * 
 	 * @param status client目前狀態

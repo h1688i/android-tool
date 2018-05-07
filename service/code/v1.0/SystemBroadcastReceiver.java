@@ -9,7 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/*
+/**
  * 系統廣播接收相應處理
  */
 public class SystemBroadcastReceiver extends BroadcastReceiver {

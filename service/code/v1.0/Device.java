@@ -65,7 +65,7 @@ public class Device {
 		}
 	}
 	
-	/*
+	/**
 	 * NetworkInfo 狀態細節解析
 	 * 
 	 * @param info 網路狀態相關細節訊息

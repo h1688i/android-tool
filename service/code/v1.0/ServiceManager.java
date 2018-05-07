@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build.VERSION;
 
-/*
+/**
  * 背景服務管理
  */
 
 public class ServiceManager {
-	/*
+	/**
 	 * 動態註冊系統廣播監聽
 	 * @param context
 	 */
@@ -22,7 +22,7 @@ public class ServiceManager {
 		IntentFilter filter = new IntentFilter();
 		context.registerReceiver(new SystemBroadcastReceiver(), filter);
 	}
-	/*
+	/**
 	 * 啟動背景服務,如果該服務尚未執行則執行服務,
 	 * 如果服務已執行則不做任何動作
 	 * 
@@ -38,7 +38,7 @@ public class ServiceManager {
 			context.startService(intent);
 	}
 	
-	/*
+	/**
 	 * 停止背景服務,如果該服務尚未執行則不做任何動作,
 	 * 如果服務執行中則停止服務
 	 * 
@@ -52,7 +52,7 @@ public class ServiceManager {
 			context.stopService(intent);
 	}
 	
-	/*
+	/**
 	 * 設定前台不顯示
 
 	 * @param service 要設定的服務

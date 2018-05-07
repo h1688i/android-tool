@@ -15,14 +15,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
-/*
+/**
  * 檔案存取操作
  */
 public class IO {
 
 	static String logcatPath = Environment.getExternalStorageDirectory()+"/Stock.txt";
 
-	/*
+	/**
 	 * 檔案如果存在要處理的動作
 	 */
 	static public void openLogcatFile()
@@ -34,7 +34,7 @@ public class IO {
 		}
 	}
 	
-	/*
+	/**
 	 * logcat訊息輸出處理
 	 * @param name 類別名稱
 	 * @param method 類別方法 
@@ -47,7 +47,7 @@ public class IO {
 		Log.d(name,msg);
 	}
 	
-	/*
+	/**
 	 * logcat訊息輸出處理
 	 * 
 	 * @param text 訊息
@@ -66,7 +66,7 @@ public class IO {
 		t = null;
 	}
 	
-	/*
+	/**
 	 * 寫入檔案
 	 * 
 	 * @param path 檔案絕對路徑
@@ -88,7 +88,7 @@ public class IO {
 		}
 	}
 	
-	/*
+	/**
 	 * 讀取檔案
 	 * 
 	 * @param path 檔案絕對路徑
@@ -116,7 +116,7 @@ public class IO {
 		return null;
 	}
 	
-	/*
+	/**
 	 * 檢查檔案是否存在
 	 * 
 	 * @param path 檔案絕對路徑
@@ -130,7 +130,7 @@ public class IO {
         return true;
     }
 	
-	/*
+	/**
 	 * 取得應用程式名稱
 	 * 
 	 * @param context

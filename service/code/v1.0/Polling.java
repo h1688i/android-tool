@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-/*
+/**
  * 系統輪詢
  */
 
@@ -15,7 +15,7 @@ public class Polling {
 	AlarmManager manager;
 	PendingIntent pendingIntent;
   
-	/*
+	/**
 	 * 重覆性輪詢
 	 * 
 	 * @param context
@@ -42,7 +42,7 @@ public class Polling {
         		seconds * 1000, pendingIntent);
     }
     
-    /*
+        /**
 	 * 單一任務輪詢
 	 * 
 	 * @param context
@@ -67,7 +67,7 @@ public class Polling {
         manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent);
     }
     
-    /*
+         /**
 	 * 停止輪詢
 	 * 
 	 * @param context
