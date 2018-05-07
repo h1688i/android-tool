@@ -40,6 +40,10 @@ public class PushService extends Daemon {
 	/*
 	 * 檢查網路連接是否正常,如果正常則繼續執行保持遠端連線動作,
 	 * 如果網路連接異常,則待機等待下一次輪巡
+	 * 
+	 * @param intent 意圖
+	 * @param flags
+	 * @param startId 調用次數
 	 */
 	@SuppressLint("InlinedApi")
 	@Override
@@ -49,14 +53,20 @@ public class PushService extends Daemon {
 			if(intent != null)
 				keepRemoteConnection(intent.getAction());
 		}
+		else
+		{
+			IO.LOG(className,"onStartCommand","無網路連線");
+		}
 		return START_STICKY;
 	}
 
 	/*
 	 * 檢查client連線狀態
+	 * 
+	 * @param action 要做動作
 	 */
 	private void keepRemoteConnection(String action) {
-		if (action != null && action.equals(HEARTBEAT)) 
+		if (action != null && action.equals(INTENT_ACTION_HEARTBEAT)) 
 		{
 			short status = client.status();
 			connectionStatus(status);
@@ -65,6 +75,8 @@ public class PushService extends Daemon {
 	
 	/*
 	 * client目前連線狀態,如果cycleCount大於cycle則重新設定Polling,Client
+	 * 
+	 * @param status client目前狀態
 	 */
 	private void connectionStatus(short status)
 	{
@@ -111,7 +123,7 @@ public class PushService extends Daemon {
 	private void initPolling()
 	{
 		pollingUtils = new Polling();
-		pollingUtils.startPollingService(this,second,PushService.class, PushService.HEARTBEAT);
+		pollingUtils.startPollingService(this,second,PushService.class, PushService.INTENT_ACTION_HEARTBEAT);
 	}
 	
 	private void stopPolling()
@@ -131,7 +143,9 @@ public class PushService extends Daemon {
 		return context;
 	}
 	
-	// 向裝置推送通知
+	/*
+	 * 向裝置推送通知
+	 */
 	/*void pushMsg(String title, String text) {
 		BadgeCountManager.addNumber();
 	    Notification notification = NotificationUI.sendNotification(title,text,R.drawable.icon);

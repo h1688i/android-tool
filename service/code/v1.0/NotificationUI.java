@@ -7,6 +7,10 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 
+/*
+ * 系統浮動通知視窗顯示元件
+ */
+
 public class NotificationUI extends Activity{
 	
 	public static Notification sendNotification(String title,String text,int icon)

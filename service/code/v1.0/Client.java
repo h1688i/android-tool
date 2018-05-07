@@ -20,16 +20,16 @@ import android.annotation.SuppressLint;
 import android.os.Environment;
 
 /*
- * 用戶端網路連接服務
+ * 用戶對遠端連接服務
  */
 
 public class Client extends Thread {
 
 	private String TAG = Client.class.getSimpleName();
 	//遠端主機ip位址
-	private String serverIP = "";
+	private String serverIP = Config.BgService.toString();
 	//遠端主機port數值
-	private int serverPort = "";
+	private int serverPort = Config.BgPort.toInt();
 	
 	private Socket socket = null;
 	private BufferedReader in = null;
@@ -64,12 +64,22 @@ public class Client extends Thread {
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 * 啟動一個thread監聽遠端服務訊息
+	 */
 	@Override
 	public void run() 
 	{
 		startListener();
 	}
 	
+	/*
+	 * 初始化對遠端連線
+	 * 
+	 * @exception 如果連線初始化失敗,重新再試一次
+	 */
 	private boolean initConnection()
 	{
 		try {
@@ -86,6 +96,11 @@ public class Client extends Thread {
 		}
 	}
 	
+	/*
+	 * 開始監聽遠端連線,先做遠端登入動作
+	 * 登入成功,則進入迴圈等待遠端回應
+	 * 登入失敗,執行socketClose動作
+	 */
 	private void startListener()
 	{
 		try {
@@ -110,6 +125,10 @@ public class Client extends Thread {
 		}
 	}
 	
+	/*
+	 * 遠端回應相應處理
+	 */
+	
 	private void work(char action,String text)
 	{
 		switch (action) {
@@ -124,8 +143,14 @@ public class Client extends Thread {
 			break;
 		}
 	}
+	
 	/*
-	private void checkLogin(String text)
+	 * 遠端回應登入成功後相關動作
+	 * 
+	 * @param text 回應訊息
+	 */
+	
+	/*private void checkLogin(String text)
 	{
 		//do nothing
 		short relust = 2;
@@ -136,14 +161,23 @@ public class Client extends Thread {
 			signInSuceesfully = true;
 		else if(state.equals("E1"))
 			signInSuceesfully = false;
-	}
+	}*/
 	
-	private void checkConnection()
+	/*
+	 * 遠端連線檢查回應
+	 */
+	
+	/*private void checkConnection()
 	{
 		//do nothing
-	}
+	}*/
 	
-	private void pushMsg(String text)
+	/*
+	 * 遠端訊息推顯示
+	 * 
+	 * @param text 及時推送訊息
+	 */
+	/*private void pushMsg(String text)
 	{
 		// 更新 update_ui_info 檔案 = 1,更新訊息
 		String path = Environment.getDataDirectory()+"/data/com.attraxus.stock/files/update_ui_info.txt";
@@ -157,8 +191,14 @@ public class Client extends Thread {
 		String direction = data[6];
 		String strategyText = name + " 投資方向 " + date +" "+ time +" "+ direction +" "+ price;
 		PushService.getContext().pushMsg("Strategy",strategyText);
-	}
-	*/
+	}*/
+	
+	/*
+	 * 向遠端服務器發送訊息
+	 * 
+	 * @param msg 要發送的訊息
+	 * @return 發送狀態 true 成功,false 失敗
+	 */
 	private boolean sendMsg(String msg) {
 		boolean result = false;
 		try {
@@ -180,6 +220,9 @@ public class Client extends Thread {
 		return result;
 	}
 	
+	/*
+	 * Socket,BufferedReader,BufferedWriter,物件關閉
+	 */
 	public void socketClose() {
 		try {
 			socket.close();
@@ -194,6 +237,9 @@ public class Client extends Thread {
 		}
 	}
 	
+	/*
+	 * client連線狀態
+	 */
 	public short status() {
 		if(signInSuceesfully)
 		{
@@ -222,13 +268,26 @@ public class Client extends Thread {
 		return false;
 	}
 	
+	/*
+	 * 每3秒重新登入一次
+	 */
 	public void relogin()
 	{
-		PushService.getContext().initClient();
-		IO.LOG(TAG,"relogin","not ready");
+		try {
+			Thread.sleep(3000);
+			PushService.getContext().initClient();
+			IO.LOG(TAG,"relogin","not ready");
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
+	
+	
 	/*
-	@SuppressLint("SimpleDateFormat")
+	 * ntp server 
+	 */
+	/*@SuppressLint("SimpleDateFormat")
 	public String ntpTime()
 	{
 		try {
@@ -249,7 +308,6 @@ public class Client extends Thread {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	*/
+	}*/
 }
 

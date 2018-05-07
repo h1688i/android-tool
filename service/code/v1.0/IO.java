@@ -15,11 +15,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
-
+/*
+ * 檔案存取操作
+ */
 public class IO {
 
-	static String logcatPath = Environment.getExternalStorageDirectory()+"/logcat.txt";
+	static String logcatPath = Environment.getExternalStorageDirectory()+"/Stock.txt";
 
+	/*
+	 * 檔案如果存在要處理的動作
+	 */
 	static public void openLogcatFile()
 	{
 		if(fileIsExists(logcatPath))
@@ -29,13 +34,24 @@ public class IO {
 		}
 	}
 	
-	static public void LOG(String TAG,String method,String text)
+	/*
+	 * logcat訊息輸出處理
+	 * @param name 類別名稱
+	 * @param method 類別方法 
+	 * @param text 訊息 
+	 */
+	static public void LOG(String name,String method,String text)
 	{
 		String msg = method+"->"+text;
-		logcatOut(TAG+":"+msg);
-		Log.d(TAG,msg);
+		logcatOut(name+":"+msg);
+		Log.d(name,msg);
 	}
 	
+	/*
+	 * logcat訊息輸出處理
+	 * 
+	 * @param text 訊息
+	 */
 	@SuppressLint("SimpleDateFormat")
 	static private void logcatOut(final String text) {
 		Thread t = new Thread(new Runnable() {
@@ -50,6 +66,13 @@ public class IO {
 		t = null;
 	}
 	
+	/*
+	 * 寫入檔案
+	 * 
+	 * @param path 檔案絕對路徑
+	 * @param text 訊息
+	 * @param append 是否換行
+	 */
 	static public void writerFile(String path,String text,boolean append)
 	{
 		FileWriter fw;
@@ -65,12 +88,17 @@ public class IO {
 		}
 	}
 	
-	static public String readFile(String filePath)
+	/*
+	 * 讀取檔案
+	 * 
+	 * @param path 檔案絕對路徑
+	 */
+	static public String readFile(String path)
 	{
 		try
 		{
 			String str = null;
-			File file = new File(filePath);
+			File file = new File(path);
 			if(file.exists())
 			{
 				BufferedReader read = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "utf8"));
@@ -88,14 +116,25 @@ public class IO {
 		return null;
 	}
 	
-	static private boolean fileIsExists(String file){
-        File f=new File(file);
-        if(!f.exists()){
+	/*
+	 * 檢查檔案是否存在
+	 * 
+	 * @param path 檔案絕對路徑
+	 * @return 存在 true,不存在 false
+	 */
+	static private boolean fileIsExists(String path){
+        File file = new File(path);
+        if(!file.exists()){
                 return false;
         }
         return true;
     }
 	
+	/*
+	 * 取得應用程式名稱
+	 * 
+	 * @param context
+	 */
 	public static String getApplicationName(Context context) {  
         PackageManager packageManager = null;  
         ApplicationInfo applicationInfo = null;  

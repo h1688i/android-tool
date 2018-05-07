@@ -8,10 +8,15 @@ import com.attraxus.stock.IO;
 import android.os.Environment;
 import android.util.Base64;
 
+/*
+ * 使用者資訊操作
+ */
 public class User {
 	
 	static String path = Environment.getDataDirectory()+"/data/com.attraxus.stock/files/user_info.txt";
-	
+	/*
+	 * 取得使用者id,並解密
+	 */
 	static public String id()
     {
     	String uid = IO.readFile(path);
@@ -33,6 +38,10 @@ public class User {
 		}
     	return uid;
     }
+	
+	/*
+	 * 儲存使用者id,並加密
+	 */
 	
 	static public void saveId(String id){
 		try {

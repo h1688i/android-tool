@@ -13,13 +13,25 @@ import android.os.IBinder;
  * 後臺服務保護
  */
 public class Daemon extends Service {
+	/*
+	 * 第一次啟動
+	 * */
+	public static final String INTENT_ACTION_START = "0";
+	/*
+	 * 重新啟動
+	 **/
+	public static final String INTENT_ACTION_RESTART = "1";
+	/*
+	 * 心跳
+	 **/
+	public static final String INTENT_ACTION_HEARTBEAT = "2"; 
 	
-	public static final String START = "0";
-	public static final String RESTART = "1";
-	public static final String HEARTBEAT = "2"; 
 	String className = null;
 	ServiceBinder binder = null;
 	ServiceLink link = null;
+	/*
+	 * 要綁定的對象類別
+	 */
 	Class<?> objects = null;
 	
 	@Override
@@ -29,6 +41,9 @@ public class Daemon extends Service {
 		initialize();
 	}
 	
+	/*
+	 * 初使化動作
+	 */
 	private void  initialize() {
 		binder = null;
 		link = null;
@@ -40,12 +55,16 @@ public class Daemon extends Service {
 	
 	/*
 	 * 設定LOG顯示類別名稱,開發階段測試用
+	 * 
+	 * @param className 類別名稱
 	 */
 	void setClassName(String className){
 		this.className = className;
 	}
 	/*
 	 * 設定綁定對象
+	 * 
+	 * @param objects 綁定對象
 	 */
 	void setBindService(Class<?> objects){
 		this.objects = objects;
@@ -77,7 +96,7 @@ public class Daemon extends Service {
 	}
 
 	/*
-	 * 與對象綁定,如果綁定的對象失去連結,則將該對象重新啟動
+	 * 與對像綁定,如果綁定的對像失去連結,則將該對像重新啟動
 	 */
 	class ServiceLink implements ServiceConnection {
 		@Override
@@ -91,7 +110,7 @@ public class Daemon extends Service {
 			IO.LOG(className,"onServiceDisconnected",componentName.getClassName());
 			
 			Intent intent = new Intent(Daemon.this, objects);
-			intent.setAction(PushService.RESTART);
+			intent.setAction(PushService.INTENT_ACTION_RESTART);
 			Daemon.this.startService(intent);
 			startBindService();
 		}

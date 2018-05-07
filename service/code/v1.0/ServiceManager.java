@@ -10,12 +10,12 @@ import android.os.Build.VERSION;
 
 /*
  * 背景服務管理
- * 
  */
 
 public class ServiceManager {
 	/*
-	 * 啟動系統廣播監聽
+	 * 動態註冊系統廣播監聽
+	 * @param context
 	 */
 	static public void startSystemBroadcastReceiver(Context context)
 	{
@@ -25,6 +25,11 @@ public class ServiceManager {
 	/*
 	 * 啟動背景服務,如果該服務尚未執行則執行服務,
 	 * 如果服務已執行則不做任何動作
+	 * 
+	 * @param tag log顯示用
+	 * @param context
+	 * @param serviceClass 要啟動的服務
+	 * @param action 要做的動作
 	 */
 	static public void start(String tag,Context context, Class<?> serviceClass,String action) {
 		Intent intent = new Intent(context,serviceClass);
@@ -36,6 +41,10 @@ public class ServiceManager {
 	/*
 	 * 停止背景服務,如果該服務尚未執行則不做任何動作,
 	 * 如果服務執行中則停止服務
+	 * 
+	 * @param tag log顯示用
+	 * @param context
+	 * @param serviceClass 要啟動的服務
 	 */
 	static public void stop(String tag,Context context, Class<?> serviceClass) {
 		Intent intent = new Intent(context,serviceClass);
@@ -43,7 +52,12 @@ public class ServiceManager {
 			context.stopService(intent);
 	}
 	
-	//設定前台不顯示
+	/*
+	 * 設定前台不顯示
+
+	 * @param service 要設定的服務
+	 */
+	
 	static public void setForegroundDoNotShow(Service service)
 	{
 		if (VERSION.SDK_INT < 18) {  
