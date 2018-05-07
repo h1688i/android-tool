@@ -6,9 +6,15 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/*
+ * AES加密
+ */
+
 public class AES {
 	public final static String IvAES = "密碼" ;
 	public final static String KeyAES = "金鑰";
+	
+	// AES加密，帶入byte[]型態的16位英數組合文字、32位英數組合Key、需加密文字
 	public static byte[] EncryptAES(byte[] iv, byte[] key, byte[] text) {
 		try {
 			AlgorithmParameterSpec mAlgorithmParameterSpec = new IvParameterSpec(iv);
