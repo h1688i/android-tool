@@ -12,10 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /*
- * v1.0
  * 這是一個tiny script,適用於小單位的場景描述,簡單易讀易用是他的特性
  * 使用 key=value 方式定義所需存取資料
- * 使用 # 來當註釋
+ * 使用 # 註釋
  */
 public class Note {
 	
@@ -23,21 +22,38 @@ public class Note {
 	private List<String> keys = new ArrayList<>();
 	private String filePath;
 	
+	/**
+	 * @param filePath 檔案絕對路徑
+	 */
 	public Note(String filePath)
 	{
 		init(filePath);
 	}
 	
+	/**
+	 * 取得資料
+	 * @param key 
+	 */
 	public String getData(String key)
 	{
 		return get(key);
 	}
 	
+	/**
+	 * 更新資料
+	 * @param key 要取得的欄位鍵
+	 * @param value  
+	 */
 	public void setData(String key,String value)
 	{
 		set(key,value);
 	}
 	
+	/**
+	 * 讀取腳本並解析腳本
+	 * 
+	 * @param filePath 檔案絕對路徑
+	 */
 	private void init(String filePath)
 	{
 		try
@@ -76,6 +92,12 @@ public class Note {
 		}
 	}
 	
+	/**
+	 * 設定資料並存檔
+	 * 
+	 * @param oldKey 要更新的資料欄位鍵
+	 * @param value
+	 */
 	private void set(String oldKey,String value)
 	{
 		if(map.containsKey(oldKey))
@@ -99,6 +121,11 @@ public class Note {
 		}
 	}
 	
+	/**
+	 * 設定資料
+	 * 
+	 * @param key 要取得的欄位鍵
+	 */
 	private String get(String key)
 	{
 		update();
@@ -110,6 +137,12 @@ public class Note {
 		return str;
 	}
 	
+	
+	/**
+	 * 存檔
+	 * 
+	 * @param data 要存檔資料
+	 */
 	private void save(String data)
 	{
 		try
@@ -128,6 +161,9 @@ public class Note {
 		}
 	}
 	
+	/**
+	 * 更新資料
+	 */
 	private void update()
 	{
 		map.clear();
