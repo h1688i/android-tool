@@ -27,7 +27,7 @@ public class Daemon extends Service {
 	public static final String INTENT_ACTION_HEARTBEAT = "2"; 
 	
 	String className = null;
-	ServiceBinder binder = null;
+	IPC ipc = null;
 	ServiceLink link = null;
 	/**
 	 * 要綁定的對象類別
@@ -45,9 +45,9 @@ public class Daemon extends Service {
 	 * 初使化動作
 	 */
 	private void  initialize() {
-		binder = null;
+		ipc = null;
 		link = null;
-		binder = new ServiceBinder();
+		ipc = new IPC();
 		link = new ServiceLink();
 		startBindService();
 		ServiceManager.setForegroundDoNotShow(this); 
@@ -87,7 +87,7 @@ public class Daemon extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return binder;
+		return ipc;
 	}
 	
 	@Override
@@ -101,7 +101,13 @@ public class Daemon extends Service {
 	class ServiceLink implements ServiceConnection {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-
+			ServiceIPC service = IPC.asInterface(iBinder);
+			try {
+				IO.LOG(className,"onServiceConnected",service.getName());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		@Override
@@ -111,6 +117,17 @@ public class Daemon extends Service {
 			Intent intent = new Intent(Daemon.this, objects);
 			intent.setAction(PushService.INTENT_ACTION_RESTART);
 			Daemon.this.startService(intent);
+		}
+	}
+	
+	/**
+	 * 跨進程通信
+	 */
+	public class IPC extends ServiceIPC.Stub {
+		@Override
+		public String getName() throws RemoteException {
+			// TODO Auto-generated method stub
+			return className;
 		}
 	}
 }
