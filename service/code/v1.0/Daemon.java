@@ -101,8 +101,7 @@ public class Daemon extends Service {
 	class ServiceLink implements ServiceConnection {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			Daemon.ServiceBinder service = (Daemon.ServiceBinder)iBinder;
-			IO.LOG(className,"onServiceConnected",service.getName());
+
 		}
 
 		@Override
@@ -113,19 +112,5 @@ public class Daemon extends Service {
 			intent.setAction(PushService.INTENT_ACTION_RESTART);
 			Daemon.this.startService(intent);
 		}
-	}
-
-	/**
-	 * 跨進程通信
-	 */
-	public class ServiceBinder extends Binder {
-
-		public String getName(){
-			return className;
-		}
-		
-		public Daemon getService() {  
-            return Daemon.this;  
-        }
 	}
 }
