@@ -72,12 +72,14 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- 核心服務  -->
-    <service android:name="com.attraxus.service.CoreService"  	 
+    <service android:name="com.attraxus.service.CoreService" 
+    	     android:process=":core"
              android:exported="false" 
              android:priority="1000">
     </service>
     <!-- 推送服務  -->
-    <service android:name="com.attraxus.service.PushService"           	
+    <service android:name="com.attraxus.service.PushService"   
+    	     android:process=":push"
              android:exported="false" 
              android:priority="1000">
         </service>
