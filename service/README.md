@@ -74,14 +74,12 @@
     <!-- 核心服務  -->
     <service android:name="com.attraxus.service.CoreService"  
              android:process=":core"	
-             android:exported="false" 
-             android:priority="1000">
+             android:exported="false">
     </service>
     <!-- 推送服務  -->
     <service android:name="com.attraxus.service.PushService"  
              android:process=":push"       	
-             android:exported="false" 
-             android:priority="1000">
+             android:exported="false">
         </service>
     <!-- 系統廣播  -->
     <receiver android:name="com.attraxus.service.SystemBroadcastReceiver"
