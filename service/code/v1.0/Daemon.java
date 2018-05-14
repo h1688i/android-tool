@@ -112,7 +112,6 @@ public class Daemon extends Service {
 			Intent intent = new Intent(Daemon.this, objects);
 			intent.setAction(PushService.INTENT_ACTION_RESTART);
 			Daemon.this.startService(intent);
-			startBindService();
 		}
 	}
 
