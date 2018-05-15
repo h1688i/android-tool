@@ -9,7 +9,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
-/**
+import android.os.RemoteException;
+/*
  * 後臺服務保護
  */
 public class Daemon extends Service {
@@ -29,7 +30,7 @@ public class Daemon extends Service {
 	String className = null;
 	IPC ipc = null;
 	ServiceLink link = null;
-	/**
+	/*
 	 * 要綁定的對象類別
 	 */
 	Class<?> objects = null;
@@ -41,7 +42,7 @@ public class Daemon extends Service {
 		initialize();
 	}
 	
-	/**
+	/*
 	 * 初使化動作
 	 */
 	private void  initialize() {
@@ -53,7 +54,7 @@ public class Daemon extends Service {
 		ServiceManager.setForegroundDoNotShow(this); 
 	}
 	
-	/**
+	/*
 	 * 設定LOG顯示類別名稱,開發階段測試用
 	 * 
 	 * @param className 類別名稱
@@ -61,7 +62,7 @@ public class Daemon extends Service {
 	void setClassName(String className){
 		this.className = className;
 	}
-	/**
+	/*
 	 * 設定綁定對象
 	 * 
 	 * @param objects 綁定對象
@@ -69,12 +70,13 @@ public class Daemon extends Service {
 	void setBindService(Class<?> objects){
 		this.objects = objects;
 	}
-	/**
+	/*
 	 * 啟動綁定
 	 */
 	@SuppressLint("InlinedApi")
 	void startBindService(){
-		bindService(new Intent(this, objects), link, Context.BIND_IMPORTANT);
+		if(objects != null)
+			bindService(new Intent(this, objects), link, Context.BIND_IMPORTANT);
 	}
 
 	@Override
@@ -95,13 +97,13 @@ public class Daemon extends Service {
 	    return super.onUnbind(intent);
 	}
 
-	/**
+	/*
 	 * 與對像綁定,如果綁定的對像失去連結,則將該對像重新啟動
 	 */
 	class ServiceLink implements ServiceConnection {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			ServiceIPC service = IPC.asInterface(iBinder);
+			IService service = IPC.asInterface(iBinder);
 			try {
 				IO.LOG(className,"onServiceConnected",service.getName());
 			} catch (RemoteException e) {
@@ -115,19 +117,20 @@ public class Daemon extends Service {
 			IO.LOG(className,"onServiceDisconnected",componentName.getClassName());
 			
 			Intent intent = new Intent(Daemon.this, objects);
-			intent.setAction(PushService.INTENT_ACTION_RESTART);
+			intent.setAction(INTENT_ACTION_RESTART);
 			Daemon.this.startService(intent);
 		}
 	}
-	
-	/**
+
+	/*
 	 * 跨進程通信
 	 */
-	public class IPC extends ServiceIPC.Stub {
+	public class IPC extends IService.Stub {
+
 		@Override
 		public String getName() throws RemoteException {
-			// TODO Auto-generated method stub
 			return className;
 		}
+
 	}
 }
