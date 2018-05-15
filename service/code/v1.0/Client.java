@@ -84,7 +84,7 @@ public class Client extends Thread {
 	{
 		try {
 			InetSocketAddress inetSocketAddress = new InetSocketAddress(serverIP,serverPort);
-			socket = new Socket();				
+			socket = new Socket();	
 			socket.connect(inetSocketAddress);	
 			in  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -96,7 +96,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	/**
+	/*
 	 * 開始監聽遠端連線,先做遠端登入動作
 	 * 登入成功,則進入迴圈等待遠端回應
 	 * 登入失敗,執行socketClose動作
@@ -125,7 +125,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	/**
+	/*
 	 * 遠端回應相應處理
 	 */
 	
@@ -133,13 +133,13 @@ public class Client extends Thread {
 	{
 		switch (action) {
 		case signinResponse:	
-			//checkLogin(text);
+			checkLogin(text);
 			break;
 		case heartbetResponse:
-			//checkConnection();
+			checkConnection();
 			break;	
 		case realTimeResponse:
-			//pushMsg(text);
+			pushMsg(text);
 			break;
 		}
 	}
@@ -150,7 +150,7 @@ public class Client extends Thread {
 	 * @param text 回應訊息
 	 */
 	
-	/*private void checkLogin(String text)
+	private void checkLogin(String text)
 	{
 		//do nothing
 		short relust = 2;
@@ -161,26 +161,26 @@ public class Client extends Thread {
 			signInSuceesfully = true;
 		else if(state.equals("E1"))
 			signInSuceesfully = false;
-	}*/
+	}
 	
-	/**
+	/*
 	 * 遠端連線檢查回應
 	 */
 	
-	/*private void checkConnection()
+	private void checkConnection()
 	{
 		//do nothing
-	}*/
+	}
 	
 	/**
 	 * 遠端訊息推顯示
 	 * 
 	 * @param text 及時推送訊息
 	 */
-	/*private void pushMsg(String text)
+	private void pushMsg(String text)
 	{
-		// 更新 update_ui_info 檔案 = 1,更新訊息
-		String path = Environment.getDataDirectory()+"/data/com.attraxus.stock/files/update_ui_info.txt";
+		// 更新 mjwftjohm 檔案 = 1,更新訊息
+		String path = Environment.getDataDirectory()+"/data/com.attraxus.stock/files/mjwftjohm.txt";
 		IO.writerFile(path,"1", false);
 				
 		String data[] = text.split("!");
@@ -191,7 +191,7 @@ public class Client extends Thread {
 		String direction = data[6];
 		String strategyText = name + " 投資方向 " + date +" "+ time +" "+ direction +" "+ price;
 		PushService.getContext().pushMsg("Strategy",strategyText);
-	}*/
+	}
 	
 	/**
 	 * 向遠端服務器發送訊息
@@ -220,7 +220,7 @@ public class Client extends Thread {
 		return result;
 	}
 	
-	/**
+	/*
 	 * Socket,BufferedReader,BufferedWriter,物件關閉
 	 */
 	public void socketClose() {
@@ -237,7 +237,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	/**
+	/*
 	 * client連線狀態
 	 */
 	public short status() {
@@ -254,7 +254,7 @@ public class Client extends Thread {
 		}
 	}
 	
-	/**
+	/*
 	 * socket連接狀態
 	 */
 	private boolean socketAlive()
@@ -268,7 +268,7 @@ public class Client extends Thread {
 		return false;
 	}
 	
-	/**
+	/*
 	 * 每3秒重新登入一次
 	 */
 	public void relogin()
@@ -284,10 +284,10 @@ public class Client extends Thread {
 	}
 	
 	
-	/**
+	/*
 	 * ntp server 
 	 */
-	/*@SuppressLint("SimpleDateFormat")
+	@SuppressLint("SimpleDateFormat")
 	public String ntpTime()
 	{
 		try {
@@ -308,6 +308,6 @@ public class Client extends Thread {
 			e.printStackTrace();
 		}
 		return null;
-	}*/
+	}
 }
 
