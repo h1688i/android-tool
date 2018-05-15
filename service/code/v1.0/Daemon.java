@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.RemoteException;
 /*
  * 後臺服務保護
@@ -87,7 +85,7 @@ public class Daemon extends Service{
 	void startObjectService(){
 		Intent intent = new Intent(this, objects);
 		intent.setAction(INTENT_ACTION_RESTART);
-		startService(intent);
+		startService(intent);		
 	}
 	
 	/*
@@ -98,7 +96,7 @@ public class Daemon extends Service{
 		if(service == null)
 		{
 			startObjectService();
-			IO.LOG(className,"binderServiceAlive","objectDaemon reset");
+			IO.LOG(className,"binderServiceAlive","startObjectService");
 		}
 	}
 	
