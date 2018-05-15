@@ -50,17 +50,5 @@ public class SystemBroadcastReceiver extends BroadcastReceiver {
 				IO.LOG(TAG,"onReceive",action);
 			}
 		}
-		else if (action.equals("clicked")) {
-			// 處理通知對話框點擊事件
-			// 點擊後開啟app
-			Intent startAppIntent = new Intent(context, MainActivity.class);
-			startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(startAppIntent);
-			BadgeCountManager.subtractNumber();
-		} 
-		else if (action.equals("cancelled")) {
-			// 處理通知對話框滑動清除和點擊系統删除按鈕事件
-			BadgeCountManager.resetCount(context);
-		}
 	}
 }
