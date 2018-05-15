@@ -7,13 +7,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Binder;
 import android.os.IBinder;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 /*
  * 後臺服務保護
  */
-public class Daemon extends Service {
+public class Daemon extends Service{
 	/*
 	 * 第一次啟動
 	 * */
@@ -28,12 +29,13 @@ public class Daemon extends Service {
 	public static final String INTENT_ACTION_HEARTBEAT = "2"; 
 	
 	String className = null;
-	IPC ipc = null;
-	ServiceLink link = null;
+	private IPC ipc = null;
+	private ServiceLink link = null;
+	IBinder myBinder = null;
 	/*
 	 * 要綁定的對象類別
 	 */
-	Class<?> objects = null;
+	private Class<?> objects = null;
 	
 	@Override
 	public void onCreate() {
@@ -78,6 +80,33 @@ public class Daemon extends Service {
 		if(objects != null)
 			bindService(new Intent(this, objects), link, Context.BIND_IMPORTANT);
 	}
+	
+	/*
+	 * 啟動要綁定的對象的服務
+	 */
+	void startObjectService(){
+		Intent intent = new Intent(this, objects);
+		intent.setAction(INTENT_ACTION_RESTART);
+		startService(intent);
+	}
+	
+	/*
+	 * 檢查對綁定象服務是否存在
+	 */
+	void binderServiceIsAlive(){
+		IService service = IPC.asInterface(myBinder);
+		if(service == null)
+		{
+			startObjectService();
+			IO.LOG(className,"binderServiceAlive","objectDaemon reset");
+		}
+	}
+	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		binderServiceIsAlive();
+		return START_STICKY;
+	}
 
 	@Override
 	public void onDestroy() {
@@ -103,6 +132,7 @@ public class Daemon extends Service {
 	class ServiceLink implements ServiceConnection {
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			myBinder = iBinder;
 			IService service = IPC.asInterface(iBinder);
 			try {
 				IO.LOG(className,"onServiceConnected",service.getName());
@@ -115,10 +145,7 @@ public class Daemon extends Service {
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 			IO.LOG(className,"onServiceDisconnected",componentName.getClassName());
-			
-			Intent intent = new Intent(Daemon.this, objects);
-			intent.setAction(INTENT_ACTION_RESTART);
-			Daemon.this.startService(intent);
+			startObjectService();
 		}
 	}
 
@@ -126,11 +153,9 @@ public class Daemon extends Service {
 	 * 跨進程通信
 	 */
 	public class IPC extends IService.Stub {
-
 		@Override
 		public String getName() throws RemoteException {
 			return className;
 		}
-
 	}
 }
