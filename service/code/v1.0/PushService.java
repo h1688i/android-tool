@@ -62,7 +62,7 @@ public class PushService extends Daemon {
 		return START_STICKY;
 	}
 
-	/*
+	/**
 	 * 檢查client連線狀態
 	 * 
 	 * @param action 要做的動作
@@ -76,7 +76,7 @@ public class PushService extends Daemon {
 		} 
 	}
 	
-	/*
+	/**
 	 * client目前連線狀態,如果cycleCount大於cycle則重新設定Polling,Client
 	 * 
 	 * @param status client目前狀態
@@ -147,8 +147,11 @@ public class PushService extends Daemon {
 		return context;
 	}
 	
-	/*
+	/**
 	 * 向裝置推送通知
+	 * 
+	 * @param title 顯示標題
+	 * @param text 顯示內文
 	 */
 	
 	void pushMsg(String title, String text) {
