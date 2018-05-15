@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-/**
+/*
  * 系統輪詢
  */
 
@@ -34,7 +34,6 @@ public class Polling {
         pendingIntent = PendingIntent.getService(context, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                                                                                                                                                                                                                       
-  
         long triggerAtTime = SystemClock.elapsedRealtime();
                                                                                                                                                                                                                
         //使用AlarmManger的setRepeating(精確)方法设置定期執行時間週期
@@ -42,7 +41,7 @@ public class Polling {
         		seconds * 1000, pendingIntent);
     }
     
-        /**
+    /**
 	 * 單一任務輪詢
 	 * 
 	 * @param context
@@ -67,7 +66,7 @@ public class Polling {
         manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent);
     }
     
-         /**
+    /**
 	 * 停止輪詢
 	 * 
 	 * @param context
