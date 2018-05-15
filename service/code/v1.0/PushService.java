@@ -3,18 +3,19 @@ package com.attraxus.service;
 import com.android.badge.BadgeCountManager;
 import com.android.badge.BadgeUtil;
 import com.android.device.Device;
+import com.attraxus.stock.Config;
 import com.attraxus.stock.IO;
 import com.attraxus.stock.R;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.Intent;
 
-/**
- * 繼承 Daemon 重啟保護機制
- * 綁定CoreService為守護服務,如果服務終止則CorehService將負責重新啟動任務
- * START_STICKY:如果服務在onStartCommand後異常終止,
- * 則系統重新啟動,重啟後intent為null
- */
+	/**
+	 * 繼承 Daemon 重啟保護機制
+	 * 綁定CoreService為守護服務,如果服務終止則CorehService將負責重新啟動任務
+	 * START_STICKY:如果服務在onStartCommand後異常終止,
+	 * 則系統重新啟動,重啟後intent為null
+	 */
 
 public class PushService extends Daemon {
 	private static PushService context = null;
@@ -23,9 +24,9 @@ public class PushService extends Daemon {
 	//輪詢最大週期週期計算
 	private short cycleMaxCount = 0;
 	//系統輪詢時間週期
-	private final short second = 60;
+	private final int second = Config.PollingCycle.toInt();
 	//輪詢最大週期,達到此數值重新設定系統輪詢
-	private final short cycleMax = second;
+	private final int cycleMax = second;
 	
 	@Override
 	public void onCreate() {
@@ -45,12 +46,13 @@ public class PushService extends Daemon {
 	 * @param flags
 	 * @param startId 調用次數
 	 */
+	
 	@SuppressLint("InlinedApi")
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if(Device.networkConnected(context))
 		{
-			if(intent != null)
+			if(intent != null && client != null)
 				keepRemoteConnection(intent.getAction());
 		}
 		else
@@ -60,11 +62,12 @@ public class PushService extends Daemon {
 		return START_STICKY;
 	}
 
-	/**
+	/*
 	 * 檢查client連線狀態
 	 * 
-	 * @param action 要做動作
+	 * @param action 要做的動作
 	 */
+	
 	private void keepRemoteConnection(String action) {
 		if (action != null && action.equals(INTENT_ACTION_HEARTBEAT)) 
 		{
@@ -73,11 +76,12 @@ public class PushService extends Daemon {
 		} 
 	}
 	
-	/**
+	/*
 	 * client目前連線狀態,如果cycleCount大於cycle則重新設定Polling,Client
 	 * 
 	 * @param status client目前狀態
 	 */
+	
 	private void connectionStatus(short status)
 	{
 		if (cycleMaxCount < cycleMax) 
@@ -107,7 +111,7 @@ public class PushService extends Daemon {
 	
 	void initClient()
 	{
-		String userId = User.id();
+		String userId = User.id(this);
 		if(userId != null)
 		{
 			client = null;
@@ -146,9 +150,10 @@ public class PushService extends Daemon {
 	/*
 	 * 向裝置推送通知
 	 */
-	/*void pushMsg(String title, String text) {
+	
+	void pushMsg(String title, String text) {
 		BadgeCountManager.addNumber();
 	    Notification notification = NotificationUI.sendNotification(title,text,R.drawable.icon);
 	    BadgeUtil.setBadgeCount(getContext(),BadgeCountManager.getCount(), R.drawable.icon, notification);
-	}*/
+	}
 }
