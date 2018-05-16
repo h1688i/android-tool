@@ -114,8 +114,9 @@ public class PushService extends Daemon {
 		String userId = User.id(this);
 		if(userId != null)
 		{
-			if(client == null)
-				client = new Client(userId);
+			if(client != null)
+				client = null;
+			client = new Client(userId);
 			IO.LOG(className,"initClient","...");
 		}
 		else
