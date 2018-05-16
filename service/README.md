@@ -8,28 +8,30 @@
 ![](BackendServiceClassDiagram.png)
 * ##### **圖 1.** 說明Strategy後臺服務基於Daemon類別為基礎,由CoreService,PushService繼承Daemon服務,並從PushServic延伸Client遠端服務通訊與Polling系統輪詢功能。
 ---
-****後臺常駐服務主流程圖:****
+****後台服務流程圖:****
 * ##### **圖 2.** 
-![](Strategy後台服務主流程圖.png)
+![](android_backend_push_msg_service.png)
 
-* ##### **圖 2.** 說明後台啟動後主要流程,當CoreService與PushService第一次被啟動後先設定綁定對象,之後執行onCreate與父類onCreate,在父類initialize裡執行服務綁定動作。
-* ##### CoreService在這裡很單純的啟動後就進入待機,不被系統倫詢。
-* ##### PushService在init設定系統輪詢與client連線服務,之後onStartCommand檢查網路狀態,如果無網路服務則待機等待下一次輪詢,如果網路正常intent不等於null則執行遠端保持連線動作,如果intent等於null則待機等待下一次輪詢,之後每次系統輪詢,PushService就被喚醒重複一次紫色區塊裡的流程,確保後台遠端服務連線正常。
-
-* ##### 當服務在onStartCommand流程中如果終止則依上一次返回值START_STICKY,將被系統自動重新啟動,啟動後的調用intent值為null,如果服務在onDestroy後終止,則由綁定對像重新啟動該服務。
-
-##### 除了上述中由系統和綁定對象重新啟動服務外,可以在app啟動或系統廣播動作中,檢查服務是否存在,不存在就重新啟動服務。
+* ##### **圖 2.** 說明使用android service元件做為移動端與遠端建立通訊接收遠端消息流程。
+* 圖 2. 分為三個部分
+    * 客戶端介面
+        * 推送服務經由客戶端介面啟動,當PushService接收到遠端推送訊息時,在將訊息推送到前端顯示。
+    * 系統後端服務
+        * CoreService,PushService兩個互相綁定,當其中一方退出,由存活的另一方將重新啟動退出的服務。
+        * PushService
+            * 系統輪詢:每週期循環喚醒service。
+            * Client:登入伺服器後每週期向遠端確認連線,並等待接收遠端訊息。
+    * 遠端伺服器
+        * 移動端即時訊息來源。
 ---
-#####  **總結** : 後臺服務可以藉由3個部分決定是否被重新啟動執行
+#####  **service保護機制** : 經由下述2點保護service服務不被永久終止
         1. START_STICKY 
-        2. app啟動後檢查
-        3. 系統廣播動作
-              使用者觸發以下動作:
-                  裝置重新開機
-                  連接電源
-                  斷開電源
-                  使用者解鎖螢幕
-                  網路連線變化
+        2. 系統廣播
+              重新開機
+              連接電源
+              斷開電源
+              解鎖螢幕
+              網路變化
 
         PS:最後不要忘記設定自動啟動管理為開啟,或是引導使用者開啟此功能
 ---
@@ -73,6 +75,7 @@
 
     <!-- 核心服務  -->
     <service android:name="com.attraxus.service.CoreService"  
+             android:process=":core"	
              android:exported="false">
     </service>
     <!-- 推送服務  -->
