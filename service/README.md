@@ -74,7 +74,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- 核心服務  -->
-    <service android:name="com.attraxus.service.CoreService"  	
+    
+    <service android:name="com.attraxus.service.CoreService"
+    	     android:process=":core"
              android:exported="false">
     </service>
     <!-- 推送服務  -->
