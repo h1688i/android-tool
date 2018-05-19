@@ -3,6 +3,7 @@ package com.attraxus.service;
 import com.android.device.Device;
 import com.attraxus.stock.IO;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -92,13 +93,12 @@ public class Daemon extends Service{
 	 */
 	void binderServiceIsAlive(){
 		IService service = IPC.asInterface(myBinder);
+		//與通信對象失去聯繫
 		if(service == null)
 		{
 			if(!Device.isServiceRunning(className, this, objects)){
+				stopService(new Intent(this, objects));
 				startObjectService();	
-			}
-			else{
-				startBindService();
 			}
 		}
 	}
@@ -147,7 +147,6 @@ public class Daemon extends Service{
 		public void onServiceDisconnected(ComponentName componentName) {
 			IO.LOG(className,"onServiceDisconnected",componentName.getClassName());
 			startObjectService();
-			startBindService();
 		}
 	}
 

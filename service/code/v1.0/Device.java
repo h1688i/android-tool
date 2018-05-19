@@ -34,14 +34,22 @@ public class Device {
 	@SuppressWarnings("deprecation")
 	public static boolean isServiceRunning(String tag,Context context, Class<?> serviceClass) {
 		boolean run = false;
+		int pid = 0;
 	    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-	        if (serviceClass.getName().equals(service.service.getClassName())) {
-	        	run = true;	  
+	        if (serviceClass.getName().equals(service.service.getClassName())) {	     
+	        	/*
+	        	 * 如果pid = 0 代表服務沒有啟動成功,服務雖存在系統列表但尚未配置記憶體
+	        	 */
+	        	pid = service.pid;
+	        	if(pid == 0)	      
+	        		run = false;	        	
+	        	else	        	
+	        		run = true;	        	
 	        }
 	    }
-	    IO.LOG(tag,"isServiceRunning", serviceClass.getName() + " " + run);
-	    return run;
+	    IO.LOG(tag,"isServiceRunning", serviceClass.getName() + " pid " + pid);
+		return run;
 	}
 	
 	/*
